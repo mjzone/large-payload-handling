@@ -1,0 +1,33 @@
+<html>
+  <body>
+    <button onclick="upload()">Upload Large Payload</button>
+    <script>
+      const url = "http://jsonplaceholder.typicode.com/todos";
+
+      upload = async () => {
+        const url = await getSignedUrl();
+        const result = await uploadToS3();
+      };
+
+      getSignedUrl = async () => {
+        return fetch(url)
+          .then((res) => res.json())
+          .then((data) => data);
+      };
+
+      uploadToS3 = async () => {
+        return fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: "Manoj",
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => data);
+      };
+    </script>
+  </body>
+</html>
