@@ -1,31 +1,38 @@
 <html>
   <body>
-    <button onclick="upload()">Upload Large Payload</button>
+    <button onclick="upload()">Large Payload</button>
     <script>
-      const url = "http://jsonplaceholder.typicode.com/todos";
+      const apiEndpoint = "https://ooh6o3dc1b.execute-api.us-east-1.amazonaws.com/dev/s3url";
+      const todosEndpoint = "http://jsonplaceholder.typicode.com/todos";
 
       upload = async () => {
-        const url = await getSignedUrl();
-        const result = await uploadToS3();
+        const todos = await getTodos();
+        const data = await getSignedUrl();
+        const result = await uploadToS3(data.url, todos);
+        console.log("Successfully Uploaded to S3");
       };
 
-      getSignedUrl = async () => {
-        return fetch(url)
+      getTodos = async () => {
+        return fetch(todosEndpoint)
           .then((res) => res.json())
           .then((data) => data);
       };
 
-      uploadToS3 = async () => {
+      getSignedUrl = async () => {
+        return fetch(apiEndpoint)
+          .then((res) => res.json())
+          .then((data) => data);
+      };
+
+      uploadToS3 = async (url, todos) => {
         return fetch(url, {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            name: "Manoj",
-          }),
+          body: JSON.stringify({ todos }),
         })
-          .then((res) => res.json())
+          .then((res) => res.text())
           .then((data) => data);
       };
     </script>

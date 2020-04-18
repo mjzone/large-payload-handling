@@ -1,0 +1,30 @@
+service: youtubeAPI
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+        - "s3:GetObject"
+        - "sns:Publish"
+      Resource: arn:aws:s3:::my-youtube-uploads/*
+
+functions:
+  getSignedUrl:
+    handler: handler.getSignedUrl
+    events:
+      - http:
+          path: s3url
+          method: get
+          cors: true
+
+  executePayload:
+    handler: handler.executePayload
+    destinations:
+      onSuccess: arn:aws:sns:us-east-1:885121665536:UploadSuccess
+    events:
+      - s3:
+          bucket: my-youtube-uploads
+          event: s3:ObjectCreated:*
