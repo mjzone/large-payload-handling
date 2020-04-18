@@ -9,7 +9,7 @@ provider:
         - "s3:PutObject"
         - "s3:GetObject"
         - "sns:Publish"
-      Resource: arn:aws:s3:::my-youtube-uploads/*
+      Resource: arn:aws:s3:::<your-uniq-s3-bucket-name>/*
 
 functions:
   getSignedUrl:
@@ -23,8 +23,8 @@ functions:
   executePayload:
     handler: handler.executePayload
     destinations:
-      onSuccess: arn:aws:sns:us-east-1:885121665536:UploadSuccess
+      onSuccess: <your-sns-topic-arn>
     events:
       - s3:
-          bucket: my-youtube-uploads
+          bucket: <your-uniq-s3-bucket-name>
           event: s3:ObjectCreated:*

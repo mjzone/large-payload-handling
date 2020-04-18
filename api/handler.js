@@ -4,7 +4,7 @@ const s3 = new AWS.S3();
 
 module.exports.getSignedUrl = async (event) => {
   try {
-    const bucket = "my-youtube-uploads";
+    const bucket = "<your-uniq-s3-bucket-name>";
     const key = uuidv4();
     const expireSeconds = 60 * 5;
 
@@ -42,7 +42,7 @@ module.exports.executePayload = async (event) => {
     let data = await s3.getObject(params).promise();
     let result = JSON.parse(data.Body.toString());
     console.log(result);
-    // Execute your business logic here.
+    /* Execute your business logic here. */
   } catch (err) {
     throw new Error(err);
   }

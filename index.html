@@ -1,8 +1,8 @@
 <html>
   <body>
-    <button onclick="upload()">Large Payload</button>
+    <button onclick="upload()">Upload Large Payload</button>
     <script>
-      const apiEndpoint = "https://ooh6o3dc1b.execute-api.us-east-1.amazonaws.com/dev/s3url";
+      const apiEndpoint = "https://<your-api-gateway-endpoint>/dev/s3url";
       const todosEndpoint = "http://jsonplaceholder.typicode.com/todos";
 
       upload = async () => {
